@@ -78,7 +78,7 @@ const RepositoryItem = ({ item }) => {
     },
     {
       data: item.reviewCount,
-      descriptor: "Revies",
+      descriptor: "Reviews",
     },
     {
       data: item.ratingAverage,

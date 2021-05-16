@@ -1,10 +1,13 @@
 import React from "react";
 import { View, StyleSheet, Pressable } from "react-native";
+import { useHistory } from "react-router-native";
 import { Formik } from "formik";
 import * as yup from "yup";
 
 import Text from "./Text";
 import FormikTextInput from "./FormikTextInput";
+
+import useSignIn from "../hooks/useSignIn";
 
 import theme from "../theme";
 
@@ -18,7 +21,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: theme.colors.white,
     marginBottom: 6,
-    marginTop:8,
+    marginTop: 8,
     borderRadius: 4,
   },
   submitButton: {
@@ -44,10 +47,6 @@ const initialValues = {
   password: "",
 };
 
-const onSubmit = (values) => {
-  console.log(values);
-};
-
 const SignInForm = ({ onSubmit }) => {
   return (
     <View style={styles.container}>
@@ -70,6 +69,21 @@ const SignInForm = ({ onSubmit }) => {
 };
 
 const SignIn = () => {
+  const [signIn] = useSignIn();
+  const history = useHistory();
+
+  const onSubmit = async (values) => {
+    const { username, password } = values;
+
+    try {
+      const data = await signIn({ username, password });
+      history.push("/");
+      console.log(data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <Formik
       initialValues={initialValues}
