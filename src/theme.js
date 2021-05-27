@@ -1,5 +1,12 @@
 import { Platform } from "react-native";
 
+const components = {
+  rating: {
+    width: 48,
+    borderWidth: 2
+  },
+};
+
 const theme = {
   colors: {
     appBarBackground: "#24292e",
@@ -24,6 +31,7 @@ const theme = {
     normal: "400",
     bold: "700",
   },
+  components,
 };
 
 export default theme;

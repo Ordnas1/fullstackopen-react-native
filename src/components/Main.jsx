@@ -8,6 +8,10 @@ import AppBar from "./AppBar";
 
 // Views
 import SignIn from "./SignIn";
+import SingleRepository from "./SingleRepository";
+import CreateReview from "./CreateReview";
+import SignUp from "./SignUp";
+import UserReviews from "./UserReviews";
 
 // Theme import
 import theme from "../theme";
@@ -30,6 +34,18 @@ const Main = () => {
         </Route>
         <Route path="/signin" exact>
           <SignIn />
+        </Route>
+        <Route path="/signup" exact>
+          <SignUp />
+        </Route>
+        <Route path="/newreview">
+          <CreateReview />
+        </Route>
+        <Route path="/userreview">
+          <UserReviews />
+        </Route>
+        <Route path="/:repositoryId">
+          <SingleRepository />
         </Route>
         <Redirect to="/" />
       </Switch>

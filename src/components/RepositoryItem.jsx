@@ -1,5 +1,6 @@
 import React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image, Pressable } from "react-native";
+import * as Linking from "expo-linking";
 
 import Text from "./Text";
 import theme from "../theme";
@@ -58,6 +59,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  button: {
+    marginTop: 16,
+    borderWidth: 1,
+    borderRadius: 4,
+    padding: 8,
+    backgroundColor: theme.colors.primary,
+    color: "white",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: theme.colors.primary,
+  },
+  buttonText: {
+    color: "white",
+  },
 });
 
 const formatNumber = (number) => {
@@ -67,6 +83,7 @@ const formatNumber = (number) => {
 };
 
 const RepositoryItem = ({ item }) => {
+  
   const metricsData = [
     {
       data: item.forksCount,
@@ -86,10 +103,19 @@ const RepositoryItem = ({ item }) => {
     },
   ];
 
+  const handlePress = () => {
+    Linking.openURL(item.url);
+  };
+
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="RepositoryItem">
       <ItemContent item={item} />
       <DataShow metrics={metricsData} />
+      {item.url && (
+        <Pressable style={styles.button} onPress={handlePress}>
+          <Text style={styles.buttonText}>Go to GitHub</Text>
+        </Pressable>
+      )}
     </View>
   );
 };
@@ -105,17 +131,25 @@ const DataShow = ({ metrics }) => (
 
 const DataShowDetail = ({ data, descriptor }) => (
   <View style={styles.dataShowDetail}>
-    <Text fontWeight="bold">{formatNumber(data)}</Text>
-    <Text>{descriptor}</Text>
+    <Text fontWeight="bold" testID="dataValue">
+      {formatNumber(data)}
+    </Text>
+    <Text testID="dataDescriptor">{descriptor}</Text>
   </View>
 );
 
 const TextContent = ({ fullName, description, language }) => (
   <View style={styles.flexTextContainer}>
-    <Text fontWeight="bold">{fullName}</Text>
-    <Text style={styles.description}>{description}</Text>
+    <Text fontWeight="bold" testID="fullName">
+      {fullName}
+    </Text>
+    <Text style={styles.description} testID="description">
+      {description}
+    </Text>
     <View style={styles.languagePill}>
-      <Text style={styles.languagePillText}>{language}</Text>
+      <Text style={styles.languagePillText} testID="language">
+        {language}
+      </Text>
     </View>
   </View>
 );

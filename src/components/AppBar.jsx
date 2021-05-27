@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Constants from "expo-constants";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { useApolloClient, useQuery } from "@apollo/client";
+import { useHistory } from "react-router-native";
 
 import useAuthStorage from "../hooks/useAuthStorage";
 import theme from "../theme";
@@ -24,17 +25,11 @@ const AppBar = () => {
   const { loading, error, data } = useQuery(IS_AUTHORIZED_USER);
   const apolloClient = useApolloClient();
   const authStorage = useAuthStorage();
-
-  useEffect(() => {
-    const checkIfUserLogged = async () => {
-      console.log("authorized data", data.authorizedUser);
-    };
-    checkIfUserLogged();
-  }, []);
+  const history = useHistory();
 
   const logOut = async () => {
     await authStorage.removeAccessToken();
-    apolloClient.resetStore();
+    apolloClient.resetStore().then(history.push("/"));
     console.log("loggin out", data.authorizedUser);
   };
 
@@ -43,11 +38,18 @@ const AppBar = () => {
       <ScrollView horizontal>
         <AppBarTab path="/">Repositories</AppBarTab>
         {!data?.authorizedUser ? (
-          <AppBarTab path="/signin">Sign In</AppBarTab>
+          <>
+            <AppBarTab path="/signin">Sign In</AppBarTab>
+            <AppBarTab path="/signup">Sign Up</AppBarTab>
+          </>
         ) : (
-          <AppBarTab onPress={logOut} pressable>
-            Sign Out
-          </AppBarTab>
+          <>
+            <AppBarTab path="/newreview">Create a Review</AppBarTab>
+            <AppBarTab path="/userreview">My Reviews</AppBarTab>
+            <AppBarTab onPress={logOut} pressable>
+              Sign Out
+            </AppBarTab>
+          </>
         )}
       </ScrollView>
     </View>
